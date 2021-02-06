@@ -69,9 +69,11 @@ class _PessoaDetalhesState extends State<PessoaDetalhes> {
               child: Text('Ok'))
         ],
       );
+
       showDialog(context: context, builder: (_) => dialog).then(
-        (value) => Navigator.of(context).pop(),
+        (value) => Navigator.of(context).pop(true),
       );
+
       //Navigator.of(context).pop(true);
     });
   }
