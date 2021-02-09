@@ -2,15 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:crud/home_page.dart';
 
 main() {
-  runApp(AppCrudPessoa());
+  runApp(AppClima());
 }
 
-class AppCrudPessoa extends StatelessWidget {
+class AppClima extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
+    return Container(
+      child: MaterialApp(
+        theme: ThemeData(
+          accentColor: Colors.cyan[600],
+          primaryColor: Colors.lightBlue[300],
+        ),
+        debugShowCheckedModeBanner: false,
+        home: HomePage(),
+      ),
     );
   }
 }

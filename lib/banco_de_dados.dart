@@ -1,16 +1,16 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:crud/pessoa.dart';
+import 'package:crud/cidade.dart';
 
 class BancoDeDados {
   String CREATE_TABLE =
-      'create table pessoa (idPessoa integer primary key autoincrement not null, nome varchar(32), email varchar(32))';
+      'create table cidade (idCidade integer primary key autoincrement not null, cidade varchar(32), cep varchar(32))';
 
-  String tabela = 'pessoa';
+  String tabela = 'cidade';
 
   Future<Database> abrirConexao() async {
     return openDatabase(
-      join(await getDatabasesPath(), 'bd_pessoa.db'),
+      join(await getDatabasesPath(), 'bd_cidade.db'),
       onCreate: (db, version) {
         return db.execute(
           this.CREATE_TABLE,
@@ -20,35 +20,35 @@ class BancoDeDados {
     );
   }
 
-  Future gravar(Pessoa p) async {
+  Future gravar(Cidade p) async {
     Database db = await this.abrirConexao();
-    if (p.idPessoa == null) {
+    if (p.idCidade == null) {
       return db.insert(this.tabela, p.toMap());
     } else {
       return db.update(
         this.tabela,
         p.toMap(),
-        where: 'idPessoa = ?',
-        whereArgs: [p.idPessoa],
+        where: 'idCidade = ?',
+        whereArgs: [p.idCidade],
       );
     }
   }
 
-  Future remover(Pessoa p) async {
+  Future remover(Cidade p) async {
     Database db = await this.abrirConexao();
     return db.delete(
       this.tabela,
-      where: 'idPessoa = ?',
-      whereArgs: [p.idPessoa],
+      where: 'idCidade = ?',
+      whereArgs: [p.idCidade],
     );
   }
 
-  Future<List<Pessoa>> listar() async {
+  Future<List<Cidade>> listar() async {
     Database db = await this.abrirConexao();
-    List<Map<String, dynamic>> pessoas = await db.query(this.tabela);
+    List<Map<String, dynamic>> cidade = await db.query(this.tabela);
     return List.generate(
-      pessoas.length,
-      (index) => Pessoa.fromMap(pessoas[index]),
+      cidade.length,
+      (index) => Cidade.fromMap(cidade[index]),
     );
   }
 }

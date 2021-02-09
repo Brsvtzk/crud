@@ -1,32 +1,32 @@
 import 'package:crud/banco_de_dados.dart';
-import 'package:crud/pessoa.dart';
+import 'package:crud/cidade.dart';
 import 'package:flutter/material.dart';
 
-class PessoaDetalhes extends StatefulWidget {
-  Pessoa pessoa;
+class CidadeDetalhes extends StatefulWidget {
+  Cidade cidade;
 
-  PessoaDetalhes(this.pessoa);
+  CidadeDetalhes(this.cidade);
 
   @override
-  _PessoaDetalhesState createState() => _PessoaDetalhesState(this.pessoa);
+  _CidadeDetalhesState createState() => _CidadeDetalhesState(this.cidade);
 }
 
-class _PessoaDetalhesState extends State<PessoaDetalhes> {
-  TextEditingController nomeCtrl = TextEditingController();
+class _CidadeDetalhesState extends State<CidadeDetalhes> {
+  TextEditingController cidadeCtrl = TextEditingController();
 
-  TextEditingController emailCtrl = TextEditingController();
+  TextEditingController cepCtrl = TextEditingController();
 
   BancoDeDados db = BancoDeDados();
 
-  Pessoa pessoa;
+  Cidade cidade;
 
-  _PessoaDetalhesState(this.pessoa);
+  _CidadeDetalhesState(this.cidade);
 
   @override
   Widget build(BuildContext context) {
-    nomeCtrl.text = this.pessoa.nome;
+    cidadeCtrl.text = this.cidade.cidade;
 
-    emailCtrl.text = this.pessoa.email;
+    cepCtrl.text = this.cidade.cep;
 
     return Scaffold(
       appBar: AppBar(
@@ -37,12 +37,12 @@ class _PessoaDetalhesState extends State<PessoaDetalhes> {
           child: Column(
             children: [
               TextField(
-                controller: this.nomeCtrl,
-                decoration: InputDecoration(labelText: 'Nome'),
+                controller: this.cidadeCtrl,
+                decoration: InputDecoration(labelText: 'Cidade'),
               ),
               TextField(
-                controller: this.emailCtrl,
-                decoration: InputDecoration(labelText: 'Email'),
+                controller: this.cepCtrl,
+                decoration: InputDecoration(labelText: 'CEP'),
               ),
               RaisedButton(
                   child: Text("Salvar"),
@@ -55,9 +55,9 @@ class _PessoaDetalhesState extends State<PessoaDetalhes> {
   }
 
   void gravar() {
-    this.pessoa.nome = nomeCtrl.text;
-    this.pessoa.email = emailCtrl.text;
-    this.db.gravar(this.pessoa).then((value) {
+    this.cidade.cidade = cidadeCtrl.text;
+    this.cidade.cep = cepCtrl.text;
+    this.db.gravar(this.cidade).then((value) {
       AlertDialog dialog = AlertDialog(
         title: Text('Cadastros'),
         content: Text('Cadastro atualizado'),
