@@ -31,28 +31,33 @@ class _HomePageState extends State<HomePage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       appBar: AppBar(
         toolbarHeight: 100,
         //barra superior com texto
-        title: Text(
-          'Clima' +
-              ' - ' +
-              this.respCidade +
-              this.respEst +
-              ': ' +
-              '\n$tempDouble' +
-              'ºC, ' +
-              this.ceu,
-          maxLines: 2,
-          textAlign: TextAlign.left,
-          textScaleFactor: 1.5,
+        title: Row(
+          children: [
+            Text(
+              'Clima' +
+                  ' - ' +
+                  this.respCidade +
+                  this.respEst +
+                  ': ' +
+                  '\n$tempDouble' +
+                  'ºC, ' +
+                  this.ceu,
+              maxLines: 2,
+              textAlign: TextAlign.left,
+              textScaleFactor: 1.5,
+            ),
+          ],
         ),
       ),
       body: ListView.builder(
           itemCount: this.cidades?.length ?? 0,
           itemBuilder: (context, index) {
             return Card(
-              margin: EdgeInsets.all(12),
+              margin: EdgeInsets.all(8),
               color: Colors.cyan[50],
               child: Container(
                 margin: EdgeInsets.all(10),
@@ -63,6 +68,7 @@ class _HomePageState extends State<HomePage> {
                         //nome da cidade
                         child: Text(
                           this.cidades[index].cidade,
+                          overflow: TextOverflow.fade,
                           style: TextStyle(fontSize: 25),
                         ),
                       ),
@@ -85,6 +91,7 @@ class _HomePageState extends State<HomePage> {
                         Center(
                           child: IconButton(
                               icon: Icon(Icons.edit),
+                              tooltip: 'Editar registro',
                               onPressed: () {
                                 abrirCidadeDetalhe(this.cidades[index]);
                               }),
@@ -92,7 +99,8 @@ class _HomePageState extends State<HomePage> {
 
                         //botão excluir
                         IconButton(
-                            icon: Icon(Icons.delete),
+                            icon: Icon(Icons.clear),
+                            tooltip: 'Excuir registro',
                             onPressed: () {
                               deletarPessoa(this.cidades[index]);
                             }),
@@ -100,6 +108,7 @@ class _HomePageState extends State<HomePage> {
                         //botão clima
                         IconButton(
                             icon: Icon(Icons.wb_sunny),
+                            tooltip: 'Pesquisar clima atual',
                             onPressed: () {
                               setState(() {
                                 respCidade = this.cidades[index].cep;
@@ -120,7 +129,7 @@ class _HomePageState extends State<HomePage> {
       //botão flutuante
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        tooltip: 'Novo registro',
+        tooltip: 'Adicionar cidade',
         onPressed: () async {
           bool response = await Navigator.of(context).push(
             MaterialPageRoute(
@@ -171,6 +180,7 @@ class _HomePageState extends State<HomePage> {
           child: Text('Não'),
         )
       ],
+      backgroundColor: Colors.cyan[50],
     );
     showDialog(context: context, builder: (_) => dialog).then(
       (resposta) {
@@ -231,6 +241,17 @@ class _HomePageState extends State<HomePage> {
       url += value2;
       url += '%20';
       url += value3;
+      url += '&units=metric&lang=pt_br&appid=a4df9586d6404c5d0917ec7f220f9a5a';
+    } else if (value4 != null) {
+      //se tiver quatro palavras
+      this.url = 'http://api.openweathermap.org/data/2.5/weather?q=';
+      url += value1;
+      url += '%20';
+      url += value2;
+      url += '%20';
+      url += value3;
+      url += '%20';
+      url += value4;
       url += '&units=metric&lang=pt_br&appid=a4df9586d6404c5d0917ec7f220f9a5a';
     }
 
