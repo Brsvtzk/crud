@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:crud/banco_de_dados.dart';
 import 'package:crud/cidade.dart';
 import 'package:crud/cidade_detalhe.dart';
@@ -12,10 +14,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  double tempDouble = 0.0;
+  String tempString = '';
   var controller = TextEditingController();
   var countStr = '';
   var ceu = ' ';
-  double temp = 0.0;
+  var temp = '';
   var respCidade = 'Bem-vindo';
   var respEst = '';
   String url = '';
@@ -33,20 +37,27 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 100,
         //barra superior com texto
-        title: Text('Clima' +
-            ' - ' +
-            this.respCidade +
-            this.respEst +
-            ': ' +
-            this.temp +
-            'º ,' +
-            this.ceu),
+        title: Text(
+          'Clima' +
+              ' - ' +
+              this.respCidade +
+              this.respEst +
+              ': ' +
+              '\n$tempDouble' +
+              'ºC, ' +
+              this.ceu,
+          maxLines: 2,
+          textAlign: TextAlign.left,
+          textScaleFactor: 1.5,
+        ),
       ),
       body: ListView.builder(
           itemCount: this.cidades?.length ?? 0,
           itemBuilder: (context, index) {
             return Card(
+              color: Colors.cyan[50],
               child: Container(
                 margin: EdgeInsets.all(12),
                 child: Column(
@@ -57,7 +68,7 @@ class _HomePageState extends State<HomePage> {
                           //nome da cidade
                           child: Text(
                             this.cidades[index].cidade,
-                            style: TextStyle(fontSize: 20),
+                            style: TextStyle(fontSize: 25),
                           ),
                         ),
 
@@ -87,11 +98,6 @@ class _HomePageState extends State<HomePage> {
                             }),
 
                         //botão consultar clima
-                        IconButton(
-                            icon: Icon(Icons.star),
-                            onPressed: () {
-                              main.buscaTemp();
-                            }),
                       ],
                     ),
 
@@ -126,6 +132,7 @@ class _HomePageState extends State<HomePage> {
           }
         },
       ),
+      backgroundColor: Colors.cyan[100],
     );
   }
 
@@ -205,11 +212,11 @@ class _HomePageState extends State<HomePage> {
     final value4 = values[3];
 
     //se o nome tiver mais que duas palavras, corrige a url
-    if (value1 != null) {
+    if (value2 == null) {
       this.url = 'http://api.openweathermap.org/data/2.5/weather?q=';
       url += value1;
       url += '&units=metric&lang=pt_br&appid=a4df9586d6404c5d0917ec7f220f9a5a';
-    } else if (value2 != null) {
+    } else if (value2 != null && value3 == null) {
       //se tiver duas palavras
       this.url = 'http://api.openweathermap.org/data/2.5/weather?q=';
       url += value1;
@@ -240,9 +247,7 @@ class _HomePageState extends State<HomePage> {
       var parsedJson = jsonDecode(resposta.body);
       print('${parsedJson.runtimeType} : $parsedJson');
       var main = parsedJson['main'];
-      this.temp = main['temp'];
-      print(temp.runtimeType);
-      print('$temp');
+      this.tempDouble = main['temp'];
 
       Map<String, dynamic> json = jsonDecode(resposta.body);
       List<dynamic> info = json['weather'];
