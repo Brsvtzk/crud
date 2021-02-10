@@ -1,12 +1,9 @@
-import 'dart:html';
-
 import 'package:crud/banco_de_dados.dart';
 import 'package:crud/cidade.dart';
 import 'package:crud/cidade_detalhe.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:crud/api_clima.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -19,11 +16,9 @@ class _HomePageState extends State<HomePage> {
   var controller = TextEditingController();
   var countStr = '';
   var ceu = ' ';
-  var temp = '';
   var respCidade = 'Bem-vindo';
   var respEst = '';
   String url = '';
-  final main = Main();
 
   BancoDeDados db = BancoDeDados();
 
@@ -57,27 +52,43 @@ class _HomePageState extends State<HomePage> {
           itemCount: this.cidades?.length ?? 0,
           itemBuilder: (context, index) {
             return Card(
+              margin: EdgeInsets.all(12),
               color: Colors.cyan[50],
               child: Container(
-                margin: EdgeInsets.all(12),
+                margin: EdgeInsets.all(10),
                 child: Column(
                   children: [
+                    Row(children: [
+                      Container(
+                        //nome da cidade
+                        child: Text(
+                          this.cidades[index].cidade,
+                          style: TextStyle(fontSize: 25),
+                        ),
+                      ),
+                    ]),
+
+                    //cep
                     Row(
                       children: [
                         Container(
-                          //nome da cidade
-                          child: Text(
-                            this.cidades[index].cidade,
-                            style: TextStyle(fontSize: 25),
-                          ),
-                        ),
-
+                            child: Text(
+                          this.cidades[index].cep,
+                          style: TextStyle(fontSize: 18),
+                        )),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
                         //botão editar
-                        IconButton(
-                            icon: Icon(Icons.edit),
-                            onPressed: () {
-                              abrirCidadeDetalhe(this.cidades[index]);
-                            }),
+                        Center(
+                          child: IconButton(
+                              icon: Icon(Icons.edit),
+                              onPressed: () {
+                                abrirCidadeDetalhe(this.cidades[index]);
+                              }),
+                        ),
 
                         //botão excluir
                         IconButton(
@@ -86,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                               deletarPessoa(this.cidades[index]);
                             }),
 
-                        //botão pesquisar
+                        //botão clima
                         IconButton(
                             icon: Icon(Icons.wb_sunny),
                             onPressed: () {
@@ -98,17 +109,6 @@ class _HomePageState extends State<HomePage> {
                             }),
 
                         //botão consultar clima
-                      ],
-                    ),
-
-                    //cep
-                    Row(
-                      children: [
-                        Container(
-                            child: Text(
-                          this.cidades[index].cep,
-                          style: TextStyle(fontSize: 18),
-                        )),
                       ],
                     ),
                   ],
@@ -158,13 +158,13 @@ class _HomePageState extends State<HomePage> {
       title: Text('Cadastros'),
       content: Text('Confirmar exclusão?'),
       actions: [
-        FlatButton(
+        TextButton(
           onPressed: () {
             Navigator.of(context).pop(true);
           },
           child: Text('Sim'),
         ),
-        FlatButton(
+        TextButton(
           onPressed: () {
             Navigator.of(context).pop(false);
           },

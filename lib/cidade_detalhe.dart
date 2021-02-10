@@ -45,12 +45,14 @@ class _CidadeDetalhesState extends State<CidadeDetalhes> {
                 decoration: InputDecoration(labelText: 'CEP'),
               ),
               RaisedButton(
+                  color: Colors.cyan[50],
                   child: Text("Salvar"),
                   onPressed: () {
                     this.gravar();
                   })
             ],
           )),
+      backgroundColor: Colors.cyan[100],
     );
   }
 
